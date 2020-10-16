@@ -1,17 +1,22 @@
+import math
 
-import math 
 class Node():
+
     def __init__(self, val):
         self.data = val
         self.next = None
+
 class linked_list():
+
     def __init__(self):
         self.head = None
         self.tail = None
+    
     def create(self, llist):
         if llist.head:
             print("List is already created!")
             return llist
+            
         while True:
             print("Enter -1 to exit.")
             n = int(input('Enter the number you want to insert:'))
@@ -21,6 +26,7 @@ class linked_list():
             if llist.head is None:
                 llist.head = newnode
                 llist.tail = newnode
+            
             else:
                 llist.tail.next = newnode
                 llist.tail = newnode
@@ -31,6 +37,7 @@ class linked_list():
             print("Create a linked list first!")
             return llist
         temp = llist.head
+        
         while temp is not None:
             print(temp.data, end = " -> ")
             temp = temp.next
@@ -62,6 +69,7 @@ class linked_list():
             return llist
         val = int(input("Enter the value after which you want to insert: "))
         ptr = llist.head
+        
         while ptr:
             if ptr.data == val:
                 n = int(input("Enter the number want to insert: "))
@@ -71,6 +79,7 @@ class linked_list():
                 break
             else:
                 ptr = ptr.next
+                
         if ptr is None:
             print('Number Not Found! Please try again.')
         return llist
@@ -79,8 +88,10 @@ class linked_list():
         if not llist.head:
             print("Create linked list first!")
             return llist
+            
         val = int(input("Enter the value before which you want to insert: "))
         slow_ptr = ptr = llist.head
+        
         while ptr is not None:
             if ptr.data == val:
                 n = int(input("Enter the number want to insert: "))
@@ -90,6 +101,7 @@ class linked_list():
                 return llist
             slow_ptr = ptr
             ptr = ptr.next
+            
         if ptr is None:
             print("Number not found!")
         return llist
@@ -100,6 +112,7 @@ class linked_list():
             return llist
         pos = int(input("Enter the position at which want to insert: "))
         ptr = llist.head
+        
         n = int(input("Enter the number want to insert: "))
         temp = Node(n)
         if pos == 1:
@@ -122,8 +135,10 @@ class linked_list():
         if not llist.head:
             print("Create linked list first!")
             return llist
+            
         val = int(input("Enter the number want to delete: "))
         slow_ptr = ptr = llist.head
+        
         while ptr is not None:
             if ptr.data == val:
                 slow_ptr.next = ptr.next
@@ -131,6 +146,7 @@ class linked_list():
                 return llist
             slow_ptr = ptr
             ptr = ptr.next
+            
         if ptr is None:
             print("Number not found!")
             return llist
@@ -153,6 +169,7 @@ class linked_list():
         if ptr == llist.tail:
             llist = llist.del_beg(llist)
             return llist
+            
         while ptr.next is not llist.tail:
             ptr = ptr.next
         remove = ptr.next
@@ -168,11 +185,13 @@ class linked_list():
             return llist
         ptr = llist.head
         slow_ptr =llist.head
+        
         n = int(input("Enter the value which you want to delete: "))
         if ptr.data == n:
             llist.head = ptr.next
             ptr = None
             return llist
+            
         while ptr is not None:
             if ptr.data == n:
                 slow_ptr.next = ptr.next
@@ -189,7 +208,8 @@ class linked_list():
         if not llist.head:
             print("Create linked list first!")
             return llist
-        slow_ptr = ptr = llist.head 
+        slow_ptr = ptr = llist.head
+        
         n = int(input("Enter the value after which you want to delete: "))
         if ptr.next == None:
             print("\n\nCan't be deleted!\n\n")
@@ -199,6 +219,7 @@ class linked_list():
             slow_ptr.next = ptr.next
             ptr = None
             return llist
+            
         while ptr is not None:
             if slow_ptr.data == n:
                 slow_ptr.next = ptr.next
@@ -216,10 +237,12 @@ class linked_list():
             print("Create linked list first")
             return llist
         slow_ptr = ptr = llist.head
+        
         n = int(input("Enter the value before which want to delete: "))
         if llist.head.data == n:
             print("Can't be deleted!")
             return llist
+            
         while ptr is not None:
             if ptr.next.data == n:
                 slow_ptr.next = ptr.next
@@ -236,11 +259,13 @@ class linked_list():
         if not llist.head:
             print("Create linked list first")
             return llist
+            
         slow_ptr = ptr = llist.head
         pos = int(input("Enter the position at which want to delete: "))
         if pos == 1:
             llist.head = ptr.next
             return llist
+            
         d = 2
         while ptr is not None:
             if d == pos + 1:
@@ -250,6 +275,7 @@ class linked_list():
             slow_ptr = ptr
             ptr = ptr.next
             d += 1
+            
         if ptr is None:
             print("Positon not found!")
             return llist
@@ -258,6 +284,7 @@ class linked_list():
         if not llist.head:
             print("Create linked list first")
             return llist
+            
         while llist.head is not None:
             llist = llist.del_beg(llist)
         return llist
@@ -269,6 +296,7 @@ class linked_list():
             return llist
         prev = None
         current = llist.head
+        
         while current is not None:
             next = current.next
             current.next = prev
@@ -284,6 +312,7 @@ class linked_list():
             return llist
         count = 0
         ptr = llist.head
+        
         while ptr is not None:
             ptr = ptr.next
             count += 1
@@ -298,6 +327,7 @@ class linked_list():
         ptr = llist.head
         flag = 0
         pos = 1
+        
         while ptr is not None:
             if ptr.data == n:
                 flag = 1
@@ -308,6 +338,8 @@ class linked_list():
             print("Number not found")
         else:
             print("Number found at positon", pos)
+            
+            
     """def root_nth(self , llist):
         if not llist.head:
             print("Create Linked list first")
@@ -345,6 +377,7 @@ class linked_list():
     def create_loop(self, llist):
         llist.tail.next = llist.head.next
         return llist
+        
     def detect(self, llist):
         flag = 0
         if not llist.head:

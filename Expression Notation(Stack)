@@ -1,0 +1,305 @@
+def push(stack, res):
+    stack.append(res)
+    return stack
+    
+def pop(stack):
+    if stack == []:
+        print("No element to pop")
+        return None, stack
+    else:
+        popped_element = stack.pop()
+        return popped_element, stack
+
+def top(stack):
+    if stack == []:
+        print("Stack is empty")
+        return stack
+    else:
+        return stack[-1]
+
+def isEmpty(stack):
+    if stack == []:
+        return True
+    else:
+        return False
+
+def postfix_evaluation(stack, s):
+    s = s.split()
+    for i in s:
+        if i.isdigit():
+            stack.append(i)
+            
+        else:
+            op1, stack = pop(stack)
+            op2, stack = pop(stack)
+            if i == "+":  
+                res = int(op2) + int(op1)
+            elif i == "-":
+                res = int(op2) - int(op1)
+            elif i == "*":
+                res = int(op2) * int(op1)
+            elif i == "/":
+                res = int(int(op2) / int(op1))
+            stack = push(stack, res)
+    print("Required value is", top(stack))
+    return stack
+
+
+def prefix_evaluation(stack, s):
+    s = s.split()
+    for i in s[::-1]:
+        if i.isdigit():
+            stack.append(i)
+            
+        else:
+            op1, stack = pop(stack)
+            op2, stack = pop(stack)
+            if i == "+":  
+                res = int(op2) + int(op1)
+            elif i == "-":
+                res = int(op2) - int(op1)
+            elif i == "*":
+                res = int(op2) * int(op1)
+            elif i == "/":
+                res = int(int(op2) / int(op1))
+            stack = push(stack, res)
+    print(stack[-1])
+
+
+def open_parenthesis(operator):
+    if operator == "(" or operator == "{" or operator == "[":
+        return True
+    else:
+        return False
+        
+def close_parenthesis(operator):
+    if operator == ")" or operator == "}" or operator == "]":
+        return True
+    else:
+        return False
+
+def higher_precedence(first_op, second_op):
+    if first_op == "+" or first_op == "-":
+        first_weight = 1
+    elif first_op == "*" or first_op == "/":
+        first_weight = 2
+    elif first_op == "^":
+        first_weight = 3
+    if second_op == "+" or second_op == "-":
+        second_weight = 1
+    elif second_op == "*" or second_op == "/":
+        second_weight = 2
+    elif second_op == "^":
+        second_weight = 3
+    if first_weight <= second_weight:
+        return False
+    else:
+        return True
+        
+        
+def infix_postfix(stack, expression):
+    expression = expression.split()
+    postfix = ""
+    for i in expression:
+        if i.isalnum():
+            postfix += i + " "
+        else:
+            while not isEmpty(stack) and not higher_precedence(i, top(stack)):
+                popped_element, stack = pop(stack)
+                postfix += popped_element + " "
+            stack = push(stack, i)
+    while not isEmpty(stack):
+        popped_element, stack = pop(stack)
+        postfix += popped_element + " "
+    return postfix
+
+def infix_postfix_bracket(stack, expression):
+    expression = expression.split()
+    postfix = ""
+    for i in expression:
+        if i.isalnum():
+            postfix += i + " "
+            
+        elif open_parenthesis(i):
+            stack = push(stack, i)
+            
+        elif close_parenthesis(i):
+            while not isEmpty(stack) and not open_parenthesis(top(stack)):
+                popped_element, stack = pop(stack)
+                postfix += popped_element + " "
+            _, stack = pop(stack)
+            
+        else:
+            while not isEmpty(stack) and not open_parenthesis(top(stack)) and not higher_precedence(i, top(stack)):
+                popped_element, stack = pop(stack)
+                postfix += popped_element + " "
+            stack = push(stack, i)
+            
+    while not isEmpty(stack):
+        popped_element, stack = pop(stack)
+        postfix += popped_element + " "
+    return postfix
+
+def infix_prefix(stack, expression):
+     expression = expression.split()
+     expression.reverse()
+     prefix = ""
+     for i in expression:
+         if i.isalnum():
+             prefix += i + " "
+             
+         else:
+            while not isEmpty(stack) and not higher_precedence(i, top(stack)):
+                popped_element, stack = pop(stack)
+                prefix += popped_element + " "
+            stack = push(stack, i)
+            
+     while not isEmpty(stack):
+        popped_element, stack = pop(stack)
+        prefix += popped_element + " "
+     return prefix[::-1]
+
+def infix_prefix_bracket(stack, expression):
+    expression = expression.split()
+    expression.reverse()
+    prefix = ""
+    for i in expression:
+        if i.isalnum():
+            prefix += i + " "
+        
+        elif close_parenthesis(i):
+            stack = push(stack, i)
+        
+        elif open_parenthesis(i):
+            while not isEmpty(stack) and not close_parenthesis(top(stack)):
+                popped_element, stack = pop(stack)
+                prefix += popped_element + " "
+            _, stack = pop(stack)
+        
+        else:
+            while not isEmpty(stack) and not close_parenthesis and not higher_precedence(i, top(stack)):
+                popped_element, stack = pop(stack)
+                prefix += popped_element + " "
+            stack = push(stack, i)
+    
+    while not isEmpty(stack):
+        popped_element, stack = pop(stack)
+        prefix += popped_element + " "
+    return prefix[::-1]
+
+def postfix_infix(stack, expression):
+    expression = expression.split()
+    infix = ""
+    for i in expression:
+        if i.isalnum():
+            stack = push(stack, i)
+            
+        else:
+            op1, stack = pop(stack)
+            op2, stack = pop(stack)
+            res = op1 +  " " + i + " " + op2
+        stack = push(stack, res)
+    return (infix.join(stack))
+
+
+def prefix_infix(stack, expression):
+    expression = expression.split()
+    expression.reverse()
+    infix = ""
+    for i in expression:
+        if i.isalnum():
+            stack = push(stack, i)
+            
+        else:
+            op1, stack = pop(stack)
+            op2, stack = pop(stack)
+            res = op1 +  " " + i + " " + op2
+            stack = push(stack, res)
+    return (infix.join(stack))
+
+
+def prefix_postfix(stack, expression):
+    expression = expression.split()
+    expression.reverse()
+    postfix = ""
+    for i in expression:
+        if i.isalnum():
+            stack = push(stack, i)
+            
+        else:
+            op1, stack = pop(stack)
+            op2, stack = pop(stack)
+            res = op1 + " " + op2 + " " + i
+            stack = push(stack, res)
+    return (postfix.join(stack))
+
+def postfix_prefix(stack, expression):
+    expression = expression.split()
+    prefix = ""
+    for i in expression:
+        if i.isalnum():
+            stack = push(stack, i)
+            
+        else:
+            op1, stack = pop(stack)
+            op2, stack = pop(stack)
+            res = i + " " + op2 + " " + op1
+            stack = push(stack, res)
+    return (prefix.join(stack))
+
+
+if __name__=="__main__":
+    stack = []
+    while True:
+        print("1. Postfix evaluation")
+        print("2. Prefix evaluation")
+        print("3. Infix to Postfix")
+        print("4. Infix to Postfix with brackets")
+        print("5. Infix to Prefix")
+        print("6. Infix to Prefix with brackets")
+        print("7. Postfix to Infix")
+        print("8. Prefix to Infix")
+        print("9. Prefix to Postfix")
+        print("10. Postfix to Prefix")
+
+        ch = int(input("Enter your choice: "))
+        if ch == 1:
+            s = input("Enter the expression: ")
+            stack = postfix_evaluation(stack, s)
+        elif ch == 2:
+            s = input("Enter the expression: ")
+            stack = prefix_evaluation(stack, s)
+        elif ch == 3:
+            expression = input("Enter the expression: ")
+            postfix = infix_postfix(stack, expression)
+            print('The required postfix expression is', postfix)
+        elif ch == 4:
+            expression = input("Enter the expression: ")
+            postfix = infix_postfix_bracket(stack, expression)
+            print('The required postfix expression is', postfix)
+        elif ch == 5:
+            expression = input("Enter the expression: ")
+            prefix = infix_prefix(stack, expression)
+            print('The required postfix expression is', prefix)
+        elif ch == 6:
+            expression = input("Enter the expression: ")
+            prefix = infix_prefix_bracket(stack, expression)
+            print('The required postfix expression is', prefix)
+        elif ch == 7:
+            expression = input("Enter the expression: ")
+            stack = postfix_infix(stack, expression)
+            print('The required infix expression is', stack)
+        elif ch == 8:
+            expression = input("Enter the expression: ")
+            infix = prefix_infix(stack, expression)
+            print('The required infix expression is', infix)
+        elif ch == 9:
+            expression = input("Enter the expression: ")
+            postfix = prefix_postfix(stack, expression)
+            print('The required infix expression is', postfix)
+        elif ch == 10:
+            expression = input("Enter the expression: ")
+            prefix = postfix_prefix(stack, expression)
+            print('The required infix expression is', prefix)
+        else:
+            break

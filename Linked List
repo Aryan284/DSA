@@ -1,1 +1,444 @@
 
+import math 
+class Node():
+    def __init__(self, val):
+        self.data = val
+        self.next = None
+class linked_list():
+    def __init__(self):
+        self.head = None
+        self.tail = None
+    def create(self, llist):
+        if llist.head:
+            print("List is already created!")
+            return llist
+        while True:
+            print("Enter -1 to exit.")
+            n = int(input('Enter the number you want to insert:'))
+            if n == -1:
+                break
+            newnode = Node(n)
+            if llist.head is None:
+                llist.head = newnode
+                llist.tail = newnode
+            else:
+                llist.tail.next = newnode
+                llist.tail = newnode
+        return llist
+    
+    def display(self, llist):
+        if not llist.head:
+            print("Create a linked list first!")
+            return llist
+        temp = llist.head
+        while temp is not None:
+            print(temp.data, end = " -> ")
+            temp = temp.next
+        print("X")
+    
+    def ins_beg(self, llist):
+        if not llist.head:
+            print("Create a linked list")
+            return llist
+        n = int(input("Enter the number you want to insert at beginning: "))
+        temp = Node(n)
+        temp.next = llist.head
+        llist.head = temp
+        return llist
+    
+    def ins_end(self, llist):
+        if not llist.head:
+            print("Create linked list first!")
+            return llist
+        n = int(input("Enter the number want to insert at the end: "))
+        temp = Node(n)
+        llist.tail.next = temp
+        llist.tail = temp
+        return llist
+    
+    def ins_after(self, llist):
+        if not llist.head:
+            print("Create linked list first!")
+            return llist
+        val = int(input("Enter the value after which you want to insert: "))
+        ptr = llist.head
+        while ptr:
+            if ptr.data == val:
+                n = int(input("Enter the number want to insert: "))
+                temp = Node(n)
+                temp.next = ptr.next
+                ptr.next = temp
+                break
+            else:
+                ptr = ptr.next
+        if ptr is None:
+            print('Number Not Found! Please try again.')
+        return llist
+    
+    def ins_before(self, llist):
+        if not llist.head:
+            print("Create linked list first!")
+            return llist
+        val = int(input("Enter the value before which you want to insert: "))
+        slow_ptr = ptr = llist.head
+        while ptr is not None:
+            if ptr.data == val:
+                n = int(input("Enter the number want to insert: "))
+                temp = Node(n)
+                temp.next = ptr
+                slow_ptr.next = temp
+                return llist
+            slow_ptr = ptr
+            ptr = ptr.next
+        if ptr is None:
+            print("Number not found!")
+        return llist
+    
+    def ins_k(self, llist):
+        if not llist.head:
+            print("Create linked list first!")
+            return llist
+        pos = int(input("Enter the position at which want to insert: "))
+        ptr = llist.head
+        n = int(input("Enter the number want to insert: "))
+        temp = Node(n)
+        if pos == 1:
+            temp.next = llist.head
+            llist.head = temp
+            return llist
+        d = 2
+        while ptr is not None:
+            if d == pos:
+                temp.next = ptr.next
+                ptr.next = temp
+                return llist
+            else:
+                ptr = ptr.next
+            d += 1
+        print("List is not that long!")
+        return llist
+    
+    def del_value(self, llist):
+        if not llist.head:
+            print("Create linked list first!")
+            return llist
+        val = int(input("Enter the number want to delete: "))
+        slow_ptr = ptr = llist.head
+        while ptr is not None:
+            if ptr.data == val:
+                slow_ptr.next = ptr.next
+                ptr = None
+                return llist
+            slow_ptr = ptr
+            ptr = ptr.next
+        if ptr is None:
+            print("Number not found!")
+            return llist
+    
+    def del_beg(self, llist):
+        if not llist.head:
+            print("Create linked list first!")
+            return llist
+        ptr = llist.head
+        llist.head = ptr.next
+        ptr = None
+        return llist
+
+
+    def del_end(self, llist):
+        if not llist.head:
+            print("Create linked list")
+            return llist
+        ptr = llist.head
+        if ptr == llist.tail:
+            llist = llist.del_beg(llist)
+            return llist
+        while ptr.next is not llist.tail:
+            ptr = ptr.next
+        remove = ptr.next
+        ptr.next = remove.next
+        remove = None
+        llist.tail = ptr
+        return llist
+
+
+    def del_val(self, llist):
+        if not llist.head:
+            print("Create linked list first")
+            return llist
+        ptr = llist.head
+        slow_ptr =llist.head
+        n = int(input("Enter the value which you want to delete: "))
+        if ptr.data == n:
+            llist.head = ptr.next
+            ptr = None
+            return llist
+        while ptr is not None:
+            if ptr.data == n:
+                slow_ptr.next = ptr.next
+                ptr = None
+                return llist
+            slow_ptr = ptr
+            ptr = ptr.next
+        if ptr is None:
+            print("Number not found!")
+            return llist
+
+
+    def del_after(self, llist):
+        if not llist.head:
+            print("Create linked list first!")
+            return llist
+        slow_ptr = ptr = llist.head 
+        n = int(input("Enter the value after which you want to delete: "))
+        if ptr.next == None:
+            print("\n\nCan't be deleted!\n\n")
+            return llist
+        if llist.head.data == n:
+            ptr = ptr.next
+            slow_ptr.next = ptr.next
+            ptr = None
+            return llist
+        while ptr is not None:
+            if slow_ptr.data == n:
+                slow_ptr.next = ptr.next
+                ptr = None
+                return llist
+            slow_ptr = ptr
+            ptr = ptr.next
+        if ptr is None:
+            print("Number not found!")
+            return llist
+
+
+    def del_before(self, llist):
+        if not llist.head:
+            print("Create linked list first")
+            return llist
+        slow_ptr = ptr = llist.head
+        n = int(input("Enter the value before which want to delete: "))
+        if llist.head.data == n:
+            print("Can't be deleted!")
+            return llist
+        while ptr is not None:
+            if ptr.next.data == n:
+                slow_ptr.next = ptr.next
+                ptr = None
+                return llist
+            slow_ptr = ptr
+            ptr = ptr.next
+        if ptr is None:
+            print("Number not found!")
+            return llist
+
+
+    def del_k(self, llist):
+        if not llist.head:
+            print("Create linked list first")
+            return llist
+        slow_ptr = ptr = llist.head
+        pos = int(input("Enter the position at which want to delete: "))
+        if pos == 1:
+            llist.head = ptr.next
+            return llist
+        d = 2
+        while ptr is not None:
+            if d == pos + 1:
+                slow_ptr.next = ptr.next
+                ptr = None
+                return llist
+            slow_ptr = ptr
+            ptr = ptr.next
+            d += 1
+        if ptr is None:
+            print("Positon not found!")
+            return llist
+
+    def del_all(self, llist):
+        if not llist.head:
+            print("Create linked list first")
+            return llist
+        while llist.head is not None:
+            llist = llist.del_beg(llist)
+        return llist
+
+        
+    def reverse(self, llist):
+        if not llist.head:
+            print("Create linked list first")
+            return llist
+        prev = None
+        current = llist.head
+        while current is not None:
+            next = current.next
+            current.next = prev
+            prev = current
+            current = next
+        llist.head = prev
+        return llist
+
+
+    def count(self, llist):
+        if not llist.head:
+            print("Create linked list first")
+            return llist
+        count = 0
+        ptr = llist.head
+        while ptr is not None:
+            ptr = ptr.next
+            count += 1
+        return count
+
+
+    def search(self, llist):
+        if not llist.head:
+            print("Create linked list first")
+            return llist
+        n = int(input("Enter the no. want to search: "))
+        ptr = llist.head
+        flag = 0
+        pos = 1
+        while ptr is not None:
+            if ptr.data == n:
+                flag = 1
+                break
+            ptr = ptr.next
+            pos += 1
+        if flag == 0:
+            print("Number not found")
+        else:
+            print("Number found at positon", pos)
+    """def root_nth(self , llist):
+        if not llist.head:
+            print("Create Linked list first")
+            return llist
+        count = 0
+        ptr = llist.head
+        i = llist.count(llist)
+        j = int(math.sqrt(i))
+        d = 1
+        while ptr is not None:
+            if d == j:
+                return ptr.data
+            else:
+                ptr = ptr.next
+            d += 1"""
+
+
+    def root_nth(self, llist):
+        if not llist.head:
+            print("Create linked list first")
+            return llist
+        ptr = llist.head
+        fast_ptr = llist.head
+        i = 1
+        j = 1
+        while fast_ptr is not None:
+            if i == int(pow((j+1), 2)):
+                ptr = ptr.next
+                j += 1
+            i += 1
+            fast_ptr = fast_ptr.next
+        return ptr.data
+
+
+    def create_loop(self, llist):
+        llist.tail.next = llist.head.next
+        return llist
+    def detect(self, llist):
+        flag = 0
+        if not llist.head:
+            print("Create linke list first")
+            return llist
+        slow_ptr = ptr = llist.head
+        while slow_ptr and ptr and ptr.next:
+            slow_ptr = slow_ptr.next
+            ptr = ptr.next.next
+            if slow_ptr == ptr:
+                flag = 1
+                break
+        if flag == 1:
+            print("Loop detected")
+            print("Now Removing loop")
+            slow_ptr = llist.head
+            while slow_ptr.next != ptr.next:
+                slow_ptr = slow_ptr.next
+                ptr = ptr.next
+            ptr.next = None
+        else:
+            print("No loop")
+        return llist
+
+if __name__=='__main__':
+    llist = linked_list()
+    while True:
+        print("Enter -1 to break.")
+        print("1. Create a linked list")
+        print("2. Display the linked list ")
+        print("3. Insertion at beginning ")
+        print("4. Insertion at end ")
+        print("5. Insertion after a value ")
+        print("6. Insertion before a value ")
+        print("7. Insertion at a given position: ")
+        print("8. Delete a node: ")
+        print("9. Delete from beginning: ")
+        print("10.Delete from end: ")
+        print("11.Deletion of given node: ")
+        print("12.Deletion after given value: ")
+        print("13.Deletion before given value: ")
+        print("14.Deletion at given position: ")
+        print("15.Delete all node: ")
+        print("16.Reverse the linked list")
+        print("17.Count no. of nodes")
+        print("18.Searching")
+        print("19.Square root")
+        print("20.Create loop")
+        print("21.Detect and delete a loop")
+        c = int(input("Enter your choice: "))
+        if c == 1:
+            llist = llist.create(llist)
+        elif c == 2:
+            llist.display(llist)
+        elif c == 3:
+            llist = llist.ins_beg(llist)
+        elif c == 4:
+            llist = llist.ins_end(llist)
+        elif c == 5:
+            llist = llist.ins_after(llist)
+        elif c == 6:
+            llist = llist.ins_before(llist)
+        elif c == 7:
+            llist = llist.ins_k(llist)
+        elif c == 8:
+            llist = llist.del_value(llist)
+        elif c == 9:
+            llist = llist.del_beg(llist)
+        elif c == 10:
+            llist = llist.del_end(llist)
+        elif c == 11:
+            llist = llist.del_val(llist)
+        elif c == 12:
+            llist = llist.del_after(llist)    
+        elif c == 13:
+            llist = llist.del_before(llist)
+        elif c == 14:
+            llist = llist.del_k(llist)
+        elif c == 15:
+            llist = llist.del_all(llist)
+        elif c == 16:
+            llist = llist.reverse(llist)
+        elif c == 17:
+            count = llist.count(llist)
+            print('\n\nThe number of nodes in the linked list is', count)
+        elif c == 18:
+            llist.search(llist)
+        elif c == 19:
+            x = llist.root_nth(llist)
+            print('Root n-th node is', x)
+        elif c == 20:
+            llist.create_loop(llist)
+        elif c == 21:
+            llist = llist.detect(llist)
+        else:
+            break
+
